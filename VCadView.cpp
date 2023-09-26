@@ -74,9 +74,9 @@ BEGIN_MESSAGE_MAP(CVCadView, CView)
 	ON_COMMAND(ID_FILE_PRINT_PREVIEW, CView::OnFilePrintPreview)
 
 	ON_COMMAND_RANGE(ID_CREATE_LINE, 
-					ID_CREATE_CONNECT, OnCreateEntity)
+					ID_INSERT_COMB, OnCreateEntity)
 	ON_UPDATE_COMMAND_UI_RANGE(ID_CREATE_LINE, 
-					ID_CREATE_CONNECT, OnUpdateCreateCommand)
+					ID_INSERT_COMB, OnUpdateCreateCommand)
 	ON_COMMAND_RANGE(ID_MODIFY_MOVE, 
 					ID_MODIFY_ERASE, OnModifyEntity)
 	ON_UPDATE_COMMAND_UI_RANGE(ID_MODIFY_MOVE, 
@@ -267,6 +267,16 @@ void CVCadView::OnCreateEntity(UINT m_nID)
 			m_pCmd = new CCreateFitCurve(32816);//Ê¶±ð·â±ÕÇøÓò
 			break;
 		}
+		case ID_CREATE_COMB:
+		{
+			m_pCmd = new CCreateComb();
+			break;
+		}
+		case ID_INSERT_COMB:
+		{
+			m_pCmd = new CInsertComb();
+			break;
+		}
 	}
 }
 
@@ -326,6 +336,18 @@ void CVCadView::OnUpdateCreateCommand(CCmdUI* pCmdUI)
 		case ID_CREATE_CONNECT:
 		{
 			if( (m_pCmd != NULL && m_pCmd->GetType() == ctCreateConnect) )
+				flag = 1;
+			break;
+		}
+		case ID_CREATE_COMB:
+		{
+			if ((m_pCmd != NULL && m_pCmd->GetType() == ctCreateComb))
+				flag = 1;
+			break;
+		}
+		case ID_INSERT_COMB:
+		{
+			if ((m_pCmd != NULL && m_pCmd->GetType() == ctInsertComb))
 				flag = 1;
 			break;
 		}

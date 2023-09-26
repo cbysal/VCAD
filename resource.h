@@ -1,6 +1,6 @@
 //{{NO_DEPENDENCIES}}
-// Microsoft Visual C++ generated include file.
-// Used by VCad.rc
+// Microsoft Visual C++ 生成的包含文件。
+// 供 VCad.rc 使用
 //
 #define IDD_ABOUTBOX                    100
 #define IDB_SPLASH                      102
@@ -116,6 +116,8 @@
 #define ID_MENUITEM32815                32815
 #define ID_INNERPT                      32816
 #define ID_CMD_COPY_BMP                 32817
+#define ID_CREATE_COMB                  32818
+#define ID_INSERT_COMB                  32819
 #define IDW_LINECOLOR                   59143
 #define IDW_LINEWIDTH                   59144
 #define IDW_LINESTYLE                   59145
@@ -130,7 +132,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_3D_CONTROLS                     1
 #define _APS_NEXT_RESOURCE_VALUE        160
-#define _APS_NEXT_COMMAND_VALUE         32818
+#define _APS_NEXT_COMMAND_VALUE         32820
 #define _APS_NEXT_CONTROL_VALUE         1001
 #define _APS_NEXT_SYMED_VALUE           103
 #endif

@@ -20,7 +20,8 @@ enum EEntityType // 图元的类型
 	etText = 8,
 	etPolygon = 9,
 	etBlock = 10,
-	etConnect = 11
+	etConnect = 11,
+	etComb = 12
 };
 
 enum EDrawMode // 绘图模式
@@ -487,6 +488,41 @@ public:
 	void GetBox(BOX2D* pBox);
 
 	void LoadPmtCursor();
+	void Serialize(CArchive& ar);
+};
+
+////////////////////////////
+// CLASS CComb
+//
+class CComb : public MEntity
+{
+	DECLARE_SERIAL(CComb)
+protected:
+	//member variables
+	CString name;
+	Position m_LeftTop, m_RightBottom;
+	std::vector<MEntity *> entities;
+
+public:
+	CComb();
+	CComb(const CComb& rect);
+	CComb(const CString&name, const Position& m_LeftTop, const Position& m_RightBottom, const std::vector<MEntity*>& entities);
+	~CComb();
+
+	MEntity* Copy();
+
+	int			GetType();
+	CString		GetName();
+	Position	GetLeftTop();
+	Position	GetRightBottom();
+	std::vector<MEntity*> GetEntities();
+	void		Init();
+
+	void Draw(CDC* pDC, int drawMode = dmNormal);
+
+	BOOL Pick(const Position& pos, const double pick_radius);
+	void Move(const Position& basePos, const Position& desPos, BOOL bTemp = FALSE);
+	void GetBox(BOX2D* pBox);
 	void Serialize(CArchive& ar);
 };
 #endif

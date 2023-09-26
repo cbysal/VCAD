@@ -18,11 +18,13 @@ enum ECommandType	// 命令类
 	ctCreatePolygon = 7,    //多边形 
 	ctCreateBlock = 8,		//块
 	ctCreateConnect = 9,    //连接
+	ctCreateComb = 10,
+	ctInsertComb = 11,
 	// ...其他创建类型
 	//  修改命令类
-	ctMove = 11,			// 移动
-	ctRotate = 12,			// 旋转
-	ctMirror = 13,			// 镜像
+	ctMove = 14,			// 移动
+	ctRotate = 15,			// 旋转
+	ctMirror = 16,			// 镜像
 	// ...其他创建类型
 	//修改视图命令类
 	ctViewPan = 20,

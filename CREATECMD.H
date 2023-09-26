@@ -181,7 +181,7 @@ public:
 
 ///////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////
-/*	
+/*
  *	CCreateArc
  */
 class CCreateArc : public CCommand
@@ -203,7 +203,7 @@ public:
 } ;
 
 ///////////////////////////////////////////////////////////////
-/*	
+/*
  *	CCreateFitCurve
  */
 class CCreateFitCurve : public CCommand
@@ -225,6 +225,48 @@ public:
 	int		OnLButtonDblClk(UINT nFlags, const Position& pos);
 	int		Cancel() ;
 } ;
+
+///////////////////////////////////////////////////////////////
+/*
+ *	CCreateComb
+ */
+class CCreateComb : public CCommand
+{
+private:
+	Position m_LeftTop;
+	Position m_RightBottom;
+public:
+	CCreateComb();
+	~CCreateComb();
+
+	int		GetType();
+	int		OnLButtonDown(UINT nFlags, const Position& pos);
+	int		OnMouseMove(UINT nFlags, const Position& pos);
+	int		OnRButtonDown(UINT nFlags, const Position& pos);
+
+	int		Cancel();
+};
+
+///////////////////////////////////////////////////////////////
+/*
+ *	CInsertComb
+ */
+class CInsertComb : public CCommand
+{
+private:
+	Position m_LeftTop;
+	Position m_RightBottom;
+public:
+	CInsertComb();
+	~CInsertComb();
+
+	int		GetType();
+	int		OnLButtonDown(UINT nFlags, const Position& pos);
+	int		OnMouseMove(UINT nFlags, const Position& pos);
+	int		OnRButtonDown(UINT nFlags, const Position& pos);
+
+	int		Cancel();
+};
 
 #endif // #ifdef __cplusplus
 

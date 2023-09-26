@@ -153,6 +153,15 @@
     <ClCompile Include="VCadView.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Comb.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CreateComb.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="InsertComb.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="VCad.rc">

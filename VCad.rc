@@ -66,7 +66,9 @@ END
 // Icon with lowest ID value placed first to ensure application icon
 // remains consistent on all systems.
 IDR_MAINFRAME           ICON                    "res\\VCad.ico"
+
 IDR_VCADTYPE            ICON                    "res\\VCadDoc.ico"
+
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -74,11 +76,17 @@ IDR_VCADTYPE            ICON                    "res\\VCadDoc.ico"
 //
 
 IDR_MAINFRAME           BITMAP                  "res\\Toolbar.bmp"
+
 IDB_SPLASH              BITMAP                  "Splsh16.bmp"
+
 IDR_CREATE              BITMAP                  "res\\toolbar1.bmp"
+
 IDR_MODIFY              BITMAP                  "res\\modify.bmp"
+
 IDR_PROPERTYBAR         BITMAP                  "res\\property.bmp"
+
 IDR_VIEW                BITMAP                  "res\\view_2d.bmp"
+
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -184,6 +192,8 @@ BEGIN
         MENUITEM "多边形(&P)",                     ID_CREATE_POLYGON
         MENUITEM "图块(&B)",                      ID_CREATE_BLOCK
         MENUITEM "连接(&N)",                      ID_CREATE_CONNECT
+        MENUITEM "组合",                          ID_CREATE_COMB
+        MENUITEM "插入组合",                        ID_INSERT_COMB
     END
     POPUP "修改(&M)"
     BEGIN
@@ -539,23 +549,41 @@ END
 //
 
 IDC_DRAW_LINE           CURSOR                  "res\\draw_lin.cur"
+
 IDC_DRAW_ARC            CURSOR                  "res\\draw_arc.cur"
+
 IDC_DRAW_RECT           CURSOR                  "res\\draw_rec.cur"
+
 IDC_DRAW_CIRCLE         CURSOR                  "res\\draw_cir.cur"
+
 IDC_PROMPT_ARC          CURSOR                  "res\\cursor1.cur"
+
 IDC_PROMPT_CIRCLE       CURSOR                  "res\\prompt_c.cur"
+
 IDC_PROMPT_LINE         CURSOR                  "res\\prompt_l.cur"
+
 IDC_PROMPT_RECT         CURSOR                  "res\\prompt_r.cur"
+
 IDC_PROMPT_ELLIPSE      CURSOR                  "res\\cur00001.cur"
+
 IDC_DRAW_ELLIPSE        CURSOR                  "res\\cur00002.cur"
+
 IDC_DRAW_TEXT           CURSOR                  "res\\cur00003.cur"
+
 IDC_DRAW_POLYGON        CURSOR                  "res\\cur00004.cur"
+
 IDC_PROMPT_TEXT         CURSOR                  "res\\cur00005.cur"
+
 IDC_PROMPT_POLYGON      CURSOR                  "res\\cursor2.cur"
+
 IDC_DRAW_CONNECT        CURSOR                  "res\\cur00006.cur"
+
 IDC_PROMPT_CONNECT      CURSOR                  "res\\cur00007.cur"
+
 IDC_PROMPT_BLOCK        CURSOR                  "res\\cur00008.cur"
+
 IDC_DRAW_BLOCK          CURSOR                  "res\\cur00009.cur"
+
 
 /////////////////////////////////////////////////////////////////////////////
 //
