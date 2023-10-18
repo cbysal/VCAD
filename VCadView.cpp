@@ -81,7 +81,7 @@ BEGIN_MESSAGE_MAP(CVCadView, CView)
 					ID_MODIFY_ERASE, OnModifyEntity)
 	ON_UPDATE_COMMAND_UI_RANGE(ID_MODIFY_MOVE, 
 					ID_MODIFY_ERASE, OnUpdateModifyCommand)
-	//ÊÓÍ¼±ä»»ÃüÁî
+	//è§†å›¾å˜æ¢å‘½ä»¤
 	ON_COMMAND_RANGE(ID_VIEW_REGION,ID_VIEW_PAN, OnViewCommand)//
 
 END_MESSAGE_MAP()
@@ -94,7 +94,7 @@ CVCadView::CVCadView()
 	// TODO: add construction code here
 	g_pView = this;
 	m_pCmd = NULL;
-	// ³õÊ¼»¯ÊÀ½ç×ø±êÓëÆÁÄ»×ø±êµÄ¹ØÏµ
+	// åˆå§‹åŒ–ä¸–ç•Œåæ ‡ä¸å±å¹•åæ ‡çš„å…³ç³»
 	m_dOrgX = m_dOrgY = 0.;
 	scale = 0.4;
 	m_bIsPrinting = FALSE;
@@ -133,13 +133,13 @@ BOOL CVCadView::PreCreateWindow(CREATESTRUCT& cs)
 
 void CVCadView::OnDraw(CDC* pDC)
 {
-	g_nRefresh ++; // Ã¿´ÎÊÓ´°±»ÖØĞÂ»æÖÆÊ±£¬Ë¢ĞÂ´ÎÊı¼Ó 1
+	g_nRefresh ++; // æ¯æ¬¡è§†çª—è¢«é‡æ–°ç»˜åˆ¶æ—¶ï¼Œåˆ·æ–°æ¬¡æ•°åŠ  1
 	CVCadDoc* pDoc = GetDocument();
 	ASSERT_VALID(pDoc);
 
 	CPen	pen; 
 	pen.CreatePen(PS_SOLID, 1, RGB(200,200,200)) ;
-	CPen *	pOldPen = pDC->SelectObject(&pen); // µÃµ½Ô­À´µÄ»­±Ê
+	CPen *	pOldPen = pDC->SelectObject(&pen); // å¾—åˆ°åŸæ¥çš„ç”»ç¬”
 
 	int i;
 	for( i=0; i<150*scale + 1; i++) {
@@ -150,7 +150,7 @@ void CVCadView::OnDraw(CDC* pDC)
 		pDC->MoveTo(i*10/scale, 0);
 		pDC->LineTo(i*10/scale, 1200);
 	}
-	pDC->SelectObject(pOldPen); // »Ö¸´Ô­À´µÄ»­±Ê 
+	pDC->SelectObject(pOldPen); // æ¢å¤åŸæ¥çš„ç”»ç¬” 
 	pen.DeleteObject();
 	DrawCoord(pDC) ;
 
@@ -185,49 +185,49 @@ CVCadDoc* CVCadView::GetDocument() // non-debug version is inline
 void CVCadView::OnCreateEntity(UINT m_nID)
 {
 
-	// Èç¹ûµ±Ç°×´Ì¬´æÔÚÃüÁî£¬ÄÇÃ´
-	// 1. È¡Ïû¸ÃÃüÁîµÄ²Ù×÷
-	// 2. É¾³ı¸ÃÃüÁî¶ÔÏó
-	// 3. ½«ÃüÁîÖ¸ÕëÉèÎª¿Õ
+	// å¦‚æœå½“å‰çŠ¶æ€å­˜åœ¨å‘½ä»¤ï¼Œé‚£ä¹ˆ
+	// 1. å–æ¶ˆè¯¥å‘½ä»¤çš„æ“ä½œ
+	// 2. åˆ é™¤è¯¥å‘½ä»¤å¯¹è±¡
+	// 3. å°†å‘½ä»¤æŒ‡é’ˆè®¾ä¸ºç©º
 	if( m_pCmd ){ 
 		m_pCmd->Cancel();
 		delete m_pCmd ;
 		m_pCmd = NULL; 
 	}
-	// ÏÂÃæ¸ù¾İ²»Í¬µÄ²Ëµ¥ÃüÁî´´½¨²»Í¬µÄÃüÁî¶ÔÏó
+	// ä¸‹é¢æ ¹æ®ä¸åŒçš„èœå•å‘½ä»¤åˆ›å»ºä¸åŒçš„å‘½ä»¤å¯¹è±¡
 	switch(m_nID)
 	{
-		case ID_CREATE_LINE: // Ö±Ïß
+		case ID_CREATE_LINE: // ç›´çº¿
 		{
 			m_pCmd = new CCreateLine();
 			break;
 		}
-		case ID_CREATE_RECTANGLE: // ¾ØĞÎ
+		case ID_CREATE_RECTANGLE: // çŸ©å½¢
 		{
 			m_pCmd = new CCreateRect();
 			break;
 		}
-		case ID_CREATE_CIRCLE: // Ô²
+		case ID_CREATE_CIRCLE: // åœ†
 		{
 			m_pCmd = new CCreateCircle();
 			break;
 		}
-		case ID_CREATE_ARC: // Ô²»¡
+		case ID_CREATE_ARC: // åœ†å¼§
 		{
 			m_pCmd = new CCreateArc();
 			break;
 		}
-		case ID_CREATE_ELLIPSE: //ÍÖÔ²
+		case ID_CREATE_ELLIPSE: //æ¤­åœ†
 		{
 			m_pCmd = new CCreateEllipse();
 			break;
 		}
-		case ID_CREATE_TEXT: // ÎÄ±¾
+		case ID_CREATE_TEXT: // æ–‡æœ¬
 		{
 			m_pCmd = new CCreateText();
 			break;
 		}
-		case ID_CREATE_POLYGON: // ¶à±ßĞÎ
+		case ID_CREATE_POLYGON: // å¤šè¾¹å½¢
 		{
 			m_pCmd = new CCreatePolygon();
 			break;
@@ -244,7 +244,7 @@ void CVCadView::OnCreateEntity(UINT m_nID)
 		}
 		case 32810:
 		{
-			m_pCmd = new CCreateFitCurve(32810);//×îĞ¡¶ş³Ë·¨
+			m_pCmd = new CCreateFitCurve(32810);//æœ€å°äºŒä¹˜æ³•
 			break;
 		}
 		case 32811:
@@ -264,7 +264,7 @@ void CVCadView::OnCreateEntity(UINT m_nID)
 		}
 		case 32816:
 		{
-			m_pCmd = new CCreateFitCurve(32816);//Ê¶±ğ·â±ÕÇøÓò
+			m_pCmd = new CCreateFitCurve(32816);//è¯†åˆ«å°é—­åŒºåŸŸ
 			break;
 		}
 		case ID_CREATE_COMB:
@@ -362,43 +362,43 @@ void CVCadView::OnModifyEntity(UINT m_nID)
 	CVCadDoc* pDoc = GetDocument();
 	ASSERT(pDoc) ;
 
-	// Èç¹ûµ±Ç°×´Ì¬´æÔÚÃüÁî£¬ÄÇÃ´
-	// 1. È¡Ïû¸ÃÃüÁîµÄ²Ù×÷
-	// 2. É¾³ı¸ÃÃüÁî¶ÔÏó
-	// 3. ½«ÃüÁîÖ¸ÕëÉèÎª¿Õ
+	// å¦‚æœå½“å‰çŠ¶æ€å­˜åœ¨å‘½ä»¤ï¼Œé‚£ä¹ˆ
+	// 1. å–æ¶ˆè¯¥å‘½ä»¤çš„æ“ä½œ
+	// 2. åˆ é™¤è¯¥å‘½ä»¤å¯¹è±¡
+	// 3. å°†å‘½ä»¤æŒ‡é’ˆè®¾ä¸ºç©º
 	if( m_pCmd ){ 
 		m_pCmd->Cancel();
 		delete m_pCmd ;
 		m_pCmd = NULL; 
 	}
 
-	// ÅĞ¶ÏÊÇ·ñÓĞÊµÌåÍ¼Ôª±»Ñ¡ÖĞ
+	// åˆ¤æ–­æ˜¯å¦æœ‰å®ä½“å›¾å…ƒè¢«é€‰ä¸­
 	if(pDoc->m_selectArray.GetSize() == 0)
 	{
-		CString	strError = _T("ÇëÊ×ÏÈÑ¡È¡Í¼Ôª");	
+		CString	strError = _T("è¯·é¦–å…ˆé€‰å–å›¾å…ƒ");	
 		AfxMessageBox(strError);
 		return;
 	}
-	// ÏÂÃæ¸ù¾İ²»Í¬µÄ²Ëµ¥ÃüÁî´´½¨²»Í¬µÄÃüÁî¶ÔÏó
+	// ä¸‹é¢æ ¹æ®ä¸åŒçš„èœå•å‘½ä»¤åˆ›å»ºä¸åŒçš„å‘½ä»¤å¯¹è±¡
 	switch(m_nID)
 	{
 		case ID_MODIFY_MOVE: 
-		{// Æ½ÒÆ
+		{// å¹³ç§»
 			m_pCmd = new CMove();
 			break;
 		}
 		case ID_MODIFY_ROTATE: 
-		{// Ğı×ª
+		{// æ—‹è½¬
 			m_pCmd = new CRotate();
 			break;
 		}
 		case ID_MODIFY_MIRROR: 
-		{// ¾µÏñ
+		{// é•œåƒ
 			m_pCmd = new CMirror();
 			break;
 		}
 		default:
-			//É¾³ı
+			//åˆ é™¤
 			Erase() ;
 			break;
 	}
@@ -408,7 +408,7 @@ void CVCadView::OnUpdateModifyCommand(CCmdUI* pCmdUI)
 	CVCadDoc* pDoc = GetDocument();
 	ASSERT(pDoc) ;
 
-	// ÅĞ¶ÏÊÇ·ñÓĞÊµÌåÍ¼Ôª±»Ñ¡ÖĞ
+	// åˆ¤æ–­æ˜¯å¦æœ‰å®ä½“å›¾å…ƒè¢«é€‰ä¸­
 	if(pDoc->m_selectArray.GetSize() == 0)
 	{
 		pCmdUI->Enable(FALSE);		
@@ -444,13 +444,13 @@ void CVCadView::OnUpdateModifyCommand(CCmdUI* pCmdUI)
 
 void CVCadView::WorldtoScreen(const Position& pos, CPoint& screenPt)
 {
-	// »ñÈ¡µ±Ç°¿Í»§ÇøµÄ´óĞ¡
+	// è·å–å½“å‰å®¢æˆ·åŒºçš„å¤§å°
 	CRect rect ;
 	GetClientRect(&rect) ;
-	// ½«ÆÁÄ»Ô­µãÉèÖÃÎª¿Í»§ÇøµÄÖĞĞÄ
+	// å°†å±å¹•åŸç‚¹è®¾ç½®ä¸ºå®¢æˆ·åŒºçš„ä¸­å¿ƒ
 	int	nSOrgX = int((rect.left + rect.right) / 2 );///scale);
 	int nSOrgY = int((rect.top + rect.bottom) / 2 );///scale);
-	// ¼ÆËãÆÁÄ»×ø±êÖµ
+	// è®¡ç®—å±å¹•åæ ‡å€¼
 	screenPt.x = (int)((pos.x - m_dOrgX) / scale + nSOrgX) ;
 	screenPt.y = (int)(nSOrgY - (pos.y - m_dOrgY) / scale ) ;
 	CDC* pDC = GetDC();
@@ -471,13 +471,13 @@ void CVCadView::ScreentoWorld(const CPoint& pt, Position& pos)
 
 	pDC->DPtoLP(&screenPt);
 	ReleaseDC(pDC);	
-	// »ñÈ¡µ±Ç°¿Í»§ÇøµÄ´óĞ¡
+	// è·å–å½“å‰å®¢æˆ·åŒºçš„å¤§å°
 	CRect rect ;
 	GetClientRect(&rect) ;
-	// ½«ÆÁÄ»Ô­µãÉèÖÃÎª¿Í»§ÇøµÄÖĞĞÄ
+	// å°†å±å¹•åŸç‚¹è®¾ç½®ä¸ºå®¢æˆ·åŒºçš„ä¸­å¿ƒ
 	int	nSOrgX = (rect.left + rect.right) / 2 ;
 	int nSOrgY = (rect.top + rect.bottom) / 2 ;
-	// ¼ÆËãÊÀ½ç×ø±êÖµ
+	// è®¡ç®—ä¸–ç•Œåæ ‡å€¼
 	pos.x = (screenPt.x - nSOrgX) * scale + m_dOrgX;
 	pos.y = (nSOrgY - screenPt.y ) * scale + m_dOrgY;
 }
@@ -505,17 +505,17 @@ void CVCadView::OnLButtonDown(UINT nFlags, CPoint point)
 	ASSERT_VALID(pDoc);
 
 	Position pos;
-	ScreentoWorld(point, pos); // ½«Éè±¸×ø±ê×ª»»ÎªÊÀ½ç×ø±ê
+	ScreentoWorld(point, pos); // å°†è®¾å¤‡åæ ‡è½¬æ¢ä¸ºä¸–ç•Œåæ ‡
 
 	if(m_pCmd) {
 		m_pCmd->OnLButtonDown(nFlags, pos);
 	}
 	else
 	{	
-		//È±Ê¡ÒÆ¶¯²Ù×÷
+		//ç¼ºçœç§»åŠ¨æ“ä½œ
 		if( (! (nFlags & MK_CONTROL)) && pDoc->m_selectArray.GetSize() >= 1)
 			m_bLBPressed = TRUE;
-		else //Ñ¡Ôñ
+		else //é€‰æ‹©
 			pDoc->OnLButtonDown(nFlags, pos);		
 	}
 
@@ -530,23 +530,25 @@ void CVCadView::OnLButtonDblClk(UINT nFlags, CPoint point)
 
 	// TODO: Add your message handler code here and/or call default
 	Position pos;
-	// ½«Éè±¸×ø±ê×ª»»ÎªÊÀ½ç×ø±ê
+	// å°†è®¾å¤‡åæ ‡è½¬æ¢ä¸ºä¸–ç•Œåæ ‡
 	ScreentoWorld(point, pos);
 
 	if(m_pCmd)
 		m_pCmd->OnLButtonDblClk(nFlags, pos);
 	else {
-		//»ñµÃÎÄµµÀàµÄÖ¸Õë
+		//è·å¾—æ–‡æ¡£ç±»çš„æŒ‡é’ˆ
 		CVCadDoc * pDoc = GetDocument() ;
 		ASSERT_VALID(pDoc) ;
 		
 		pDoc->OnLButtonDown(nFlags, pos);
 		
 		MEntity* pSelEntity = NULL ;
-		POSITION pos = NULL ;
-		if(pDoc->m_selectArray.GetSize() == 1) {
+		//POSITION pos = NULL ; //é‡Šæ”¾äº†posï¼Œç”±äºåç»­éœ€è¦posçš„åæ ‡ä¿¡æ¯ï¼Œæ­¤å¤„æ³¨é‡Š
+		if(pDoc->m_selectArray.GetSize() == 1) 
+		{
 			pSelEntity = (MEntity*)pDoc->m_selectArray[0] ;
-			if(pSelEntity->GetType() == etText) {
+			if(pSelEntity->GetType() == etText) 
+			{
 				CTextInputDlg dlg;
 				CString oldText = ((MText*)pSelEntity)->GetText();
 				dlg.m_text = oldText;
@@ -554,10 +556,47 @@ void CVCadView::OnLButtonDblClk(UINT nFlags, CPoint point)
 				
 				((MText*)pSelEntity)->SetText(dlg.m_text);
 			}
+				/*ä»¥ä¸‹éƒ¨åˆ†ä¸ºç»„åˆä¸­æ–‡æœ¬ä¿®æ”¹çš„éƒ¨åˆ†ä»£ç */
+			if (pSelEntity->GetType() == etComb) //ç»„åˆæ–‡æœ¬ä¿®æ”¹å¤„@ï¼ï¼ï¼
+			{
+				CComb* pComb = static_cast<CComb*>(pSelEntity);
+				for (MEntity* element : pComb->GetEntities())  //éå†ç»„åˆä¸­çš„æ¯ä¸€ä¸ªå…ƒç´ 
+				{
+					if (element->GetType() == etText)   //æ–‡æœ¬å…ƒç´ åˆ™å¯ä»¥å®ç°ä¿®æ”¹
+					{
+						MText* textObject = static_cast<MText*>(element);
+						Position LeftTopPos=textObject->GetLeftTopPos(); //è·å–æ–‡æœ¬æ¡†çš„ä¸Šä¸‹å¯¹è§’åæ ‡
+						Position GetRightBottomPos = textObject->GetRightBottomPos();
+						CRect textRect(LeftTopPos.x, GetRightBottomPos.y, GetRightBottomPos.x, LeftTopPos.y);//å®šä¹‰ä¸€ä¸ªçŸ©å½¢ä¾¿äºåˆ¤æ–­è¾¹ç•Œ	
+						if (textRect.PtInRect(CPoint(pos.x, pos.y))==true)
+						{
+							// é¼ æ ‡ä½ç½®åœ¨æ–‡æœ¬æ¡†çš„è¾¹ç•Œå†…
+		
+							CTextInputDlg dlg;
+							CString oldText = ((MText*)element)->GetText();
+							dlg.m_text = oldText;
+							dlg.DoModal();
+							((MText*)element)->SetText(dlg.m_text);
+							//}
+							//std::cout << "in text" << std::endl;
+						}
+						else 
+						{
+							// é¼ æ ‡ä½ç½®ä¸åœ¨æ–‡æœ¬æ¡†çš„è¾¹ç•Œå†…
+							//std::cout << LeftTopPos.x << "  " << LeftTopPos.y << "  " << GetRightBottomPos.x << "  " << GetRightBottomPos.y << std::endl;
+							//std::cout << pos.x << "  "<<pos.y << std::endl;
+							//std::cout << "not in text" << std::endl;
+						}
+
+					}
+				}
+		//std::cout << "222" << std::endl;;
+
+			}
 		}
-		//Çå¿ÕÑ¡Ôñ¼¯
+		//æ¸…ç©ºé€‰æ‹©é›†
 		pDoc->m_selectArray.RemoveAll() ;
-		//¸üĞÂÎÄµµ£¬ÖØĞÂ»æÖÆ
+		//æ›´æ–°æ–‡æ¡£ï¼Œé‡æ–°ç»˜åˆ¶
 		pDoc->UpdateAllViews(NULL) ;
 
 	}
@@ -575,16 +614,16 @@ void CVCadView::OnMouseMove(UINT nFlags, CPoint point)
 	ASSERT_VALID(pDoc);
 
 	Position pos;
-	ScreentoWorld(point, pos);// ½«Éè±¸×ø±ê×ª»»ÎªÊÀ½ç×ø±ê
+	ScreentoWorld(point, pos);// å°†è®¾å¤‡åæ ‡è½¬æ¢ä¸ºä¸–ç•Œåæ ‡
 
-	//»ñµÃ×´Ì¬ÌõµÄÖ¸Õë
+	//è·å¾—çŠ¶æ€æ¡çš„æŒ‡é’ˆ
 	CStatusBar* pStatus=(CStatusBar*)
 		AfxGetApp()->m_pMainWnd->GetDescendantWindow(ID_VIEW_STATUS_BAR);
 	if(pStatus)
 	{
 		char tbuf[40];
 		sprintf(tbuf,"(%8.3f,%8.3f)",pos.x, pos.y);
-		//ÔÚ×´Ì¬ÌõµÄµÚ¶ş¸ö´°¸ñÖĞÊä³öµ±Ç°Êó±êµÄÎ»ÖÃ
+		//åœ¨çŠ¶æ€æ¡çš„ç¬¬äºŒä¸ªçª—æ ¼ä¸­è¾“å‡ºå½“å‰é¼ æ ‡çš„ä½ç½®
 		pStatus->SetPaneText(1,tbuf);
 	}
 	if(m_pCmd)
@@ -594,36 +633,36 @@ void CVCadView::OnMouseMove(UINT nFlags, CPoint point)
 			pDoc->OnMouseMove(nFlags, pos);
 	}
 
-	if(m_bLBPressed) {//ÍÏ¶¯ÊµÌå
+	if(m_bLBPressed) {//æ‹–åŠ¨å®ä½“
 			Position	prePos, curPos, basePos;
 			ScreentoWorld(m_basePos, basePos);
-			ScreentoWorld(m_desPos, prePos); // »ñµÃÉÏÒ»¸öÄ¿±êÎ»ÖÃ
-			curPos = pos; // µÃµ½µ±Ç°Î»ÖÃ
+			ScreentoWorld(m_desPos, prePos); // è·å¾—ä¸Šä¸€ä¸ªç›®æ ‡ä½ç½®
+			curPos = pos; // å¾—åˆ°å½“å‰ä½ç½®
 			
 
 			CDC*	pDC = g_pView->GetDC(); 
-			// ¸ù¾İµ±Ç°Î»ÖÃ¸ø³öÑ¡ÖĞÍ¼ÔªµÄÊµÊ±Î»ÖÃ
+			// æ ¹æ®å½“å‰ä½ç½®ç»™å‡ºé€‰ä¸­å›¾å…ƒçš„å®æ—¶ä½ç½®
 			int i, n;
 			for(n = g_pDoc->m_selectArray.GetSize(), i = 0; i < n; i++)
 			{
 				MEntity*	pEntity = (MEntity*)g_pDoc->m_selectArray[i];
 				pEntity->Draw(pDC,dmSelect);
-				// Èç¹ûÔÚ²Ù×÷¹ı³ÌÖĞ´°¿ÚÃ»ÓĞ±»Ë¢ĞÂ£¬ÔòÒªÇå³ıÉÏÒ»¸öÎ»ÖÃÉÏ»æÖÆµÄÍ¼Ôª
+				// å¦‚æœåœ¨æ“ä½œè¿‡ç¨‹ä¸­çª—å£æ²¡æœ‰è¢«åˆ·æ–°ï¼Œåˆ™è¦æ¸…é™¤ä¸Šä¸€ä¸ªä½ç½®ä¸Šç»˜åˆ¶çš„å›¾å…ƒ
 				if(1) 
 				{
-					MEntity*	pCopyEntity1 = pEntity->Copy(); // µÃµ½Í¼ÔªµÄ¿½±´
-					pCopyEntity1->Move(basePos, prePos, TRUE); // ½«¿½±´ÒÆ¶¯µ½ÉÏÒ»¸öÎ»ÖÃ
-					pCopyEntity1->Draw(pDC,dmDrag); // ¶ÔÔÚÉÏÒ»¸öÎ»ÖÃ¶Ô¿½±´½øĞĞÖØ»­
-					delete pCopyEntity1; // É¾³ıÁÙÊ±¿½±´
+					MEntity*	pCopyEntity1 = pEntity->Copy(); // å¾—åˆ°å›¾å…ƒçš„æ‹·è´
+					pCopyEntity1->Move(basePos, prePos, TRUE); // å°†æ‹·è´ç§»åŠ¨åˆ°ä¸Šä¸€ä¸ªä½ç½®
+					pCopyEntity1->Draw(pDC,dmDrag); // å¯¹åœ¨ä¸Šä¸€ä¸ªä½ç½®å¯¹æ‹·è´è¿›è¡Œé‡ç”»
+					delete pCopyEntity1; // åˆ é™¤ä¸´æ—¶æ‹·è´
 				}
-				// ÔÚµ±Ç°Î»ÖÃÉÏ»æÖÆÍ¼Ôª
-				MEntity*	pCopyEntity2 = pEntity->Copy();// µÃµ½Í¼ÔªµÄ¿½±´
-				pCopyEntity2->Move(basePos, curPos, TRUE);// ½«¿½±´ÒÆ¶¯µ½µ±Ç°Î»ÖÃ
-				pCopyEntity2->Draw(pDC,dmDrag);	// ¶Ôµ±Ç°Î»ÖÃ»æÖÆ¿½±´
-				delete pCopyEntity2; // É¾³ıÁÙÊ±¿½±´ 
+				// åœ¨å½“å‰ä½ç½®ä¸Šç»˜åˆ¶å›¾å…ƒ
+				MEntity*	pCopyEntity2 = pEntity->Copy();// å¾—åˆ°å›¾å…ƒçš„æ‹·è´
+				pCopyEntity2->Move(basePos, curPos, TRUE);// å°†æ‹·è´ç§»åŠ¨åˆ°å½“å‰ä½ç½®
+				pCopyEntity2->Draw(pDC,dmDrag);	// å¯¹å½“å‰ä½ç½®ç»˜åˆ¶æ‹·è´
+				delete pCopyEntity2; // åˆ é™¤ä¸´æ—¶æ‹·è´ 
 			}
 			g_pView->ReleaseDC(pDC);
-			m_desPos = point; // ½«Ä¿±êÉèÖÃÎªµ±Ç°Î»ÖÃ
+			m_desPos = point; // å°†ç›®æ ‡è®¾ç½®ä¸ºå½“å‰ä½ç½®
 
 			if(pos.Distance(prePos) > 0.5)
 				m_bDragging = TRUE;
@@ -639,7 +678,7 @@ void CVCadView::OnRButtonDown(UINT nFlags, CPoint point)
 
 	// TODO: Add your message handler code here and/or call default
 	Position pos;
-	// ½«Éè±¸×ø±ê×ª»»ÎªÊÀ½ç×ø±ê
+	// å°†è®¾å¤‡åæ ‡è½¬æ¢ä¸ºä¸–ç•Œåæ ‡
 	ScreentoWorld(point, pos);
 
 	if(m_pCmd)
@@ -668,7 +707,7 @@ void CVCadView::OnUpdatePick(CCmdUI* pCmdUI)
 
 BOOL CVCadView::OnPreparePrinting(CPrintInfo* pInfo)
 {
-	// ½«»æÍ¼°åÉèÖÃÎª2¸ö±ê×¼Ò³´óĞ¡
+	// å°†ç»˜å›¾æ¿è®¾ç½®ä¸º2ä¸ªæ ‡å‡†é¡µå¤§å°
 	pInfo->SetMaxPage(2);
 	return DoPreparePrinting(pInfo);
 }
@@ -676,10 +715,10 @@ BOOL CVCadView::OnPreparePrinting(CPrintInfo* pInfo)
 void CVCadView::OnBeginPrinting(CDC* pDC, CPrintInfo* pInfo)
 {
 	// TODO: add extra initialization before printing
-	// »ñµÃ¿É´òÓ¡ÇøÓò£¨ºÁÃ×Öµ£©
+	// è·å¾—å¯æ‰“å°åŒºåŸŸï¼ˆæ¯«ç±³å€¼ï¼‰
 	int nHorzSize = pDC->GetDeviceCaps(HORZSIZE);
 	int nVertSize = pDC->GetDeviceCaps(VERTSIZE);
-	// ¼ÆËãÒ³ÃæµÄ¸ß¶ÈºÍ¿í¶È£¨Âß¼­µ¥Î»£©  
+	// è®¡ç®—é¡µé¢çš„é«˜åº¦å’Œå®½åº¦ï¼ˆé€»è¾‘å•ä½ï¼‰  
 	m_nPageWidth = (int)((double)nHorzSize / 25.4 * 100.0);
 	m_nPageHeight = (int)((double)nVertSize / 25.4 * 100.0);
 }
@@ -710,11 +749,11 @@ void CVCadView::OnPrint(CDC* pDC, CPrintInfo* pInfo)
 		-pInfo->m_rectDraw.top);
 	
 	m_bIsPrinting=TRUE;	
-	// ´òÓ¡Ò³Ã¼
+	// æ‰“å°é¡µçœ‰
 	PrintPageHeader(pDC,pInfo); 
-	// ´òÓ¡Í¼ĞÎ
+	// æ‰“å°å›¾å½¢
 	CView::OnPrint(pDC, pInfo); 
-	// ´òÓ¡Ò³½Å
+	// æ‰“å°é¡µè„š
 	PrintPageFooter(pDC,pInfo);
 
 	m_bIsPrinting=FALSE;
@@ -723,10 +762,10 @@ void CVCadView::OnPrint(CDC* pDC, CPrintInfo* pInfo)
 
 void CVCadView::PrintPageHeader(CDC *pDC, CPrintInfo *pInfo)
 {
-	// »ñÈ¡Éè±¸ÃèÊö±íÖĞÈ±Ê¡µÄ×ÖÌå
+	// è·å–è®¾å¤‡æè¿°è¡¨ä¸­ç¼ºçœçš„å­—ä½“
 	TEXTMETRIC tm;
 	pDC->GetTextMetrics(&tm);
-	// ´´½¨ĞÂ×ÖÌå²¢½«ÆäÑ¡ÈëÉè±¸ÃèÊö±í
+	// åˆ›å»ºæ–°å­—ä½“å¹¶å°†å…¶é€‰å…¥è®¾å¤‡æè¿°è¡¨
 	CFont newFont;
 	newFont.CreateFont(-tm.tmHeight,
 		0,0,0,
@@ -738,52 +777,52 @@ void CVCadView::PrintPageHeader(CDC *pDC, CPrintInfo *pInfo)
 		"Courier New");
 	CFont* pOldFont = (CFont*)pDC->SelectObject(&newFont);
 
-	// Ò³Ã¼ÖĞµÄÎÄ±¾ÓÒ¶ÔÆë
+	// é¡µçœ‰ä¸­çš„æ–‡æœ¬å³å¯¹é½
 	pDC->SetTextAlign(TA_RIGHT);
-	// ´òÓ¡Ò³Ã¼ÎÄ±¾
-	pDC->TextOut(pInfo->m_rectDraw.right, -25, "VCad »æÍ¼ÏµÍ³");
+	// æ‰“å°é¡µçœ‰æ–‡æœ¬
+	pDC->TextOut(pInfo->m_rectDraw.right, -25, "VCad ç»˜å›¾ç³»ç»Ÿ");
 
-	// ´òÓ¡Ò³Ã¼ÖĞµÄË®Æ½Ö±Ïß
+	// æ‰“å°é¡µçœ‰ä¸­çš„æ°´å¹³ç›´çº¿
 	int y = - 35 - tm.tmHeight;
 	pDC->MoveTo(0,y);
 	pDC->LineTo(pInfo->m_rectDraw.right,y);
 
-	// ¸ù¾İÒ³Ã¼Õ¼ÓÃµÄ¿Õ¼äÀ´µ÷Õû¿É´òÓ¡Í¼ĞÎÇøÓò
+	// æ ¹æ®é¡µçœ‰å ç”¨çš„ç©ºé—´æ¥è°ƒæ•´å¯æ‰“å°å›¾å½¢åŒºåŸŸ
 	y -= 25;
 	pInfo->m_rectDraw.top += y;
 
-	// »Ö¸´ÒÔÇ°µÄ×ÖÌå
+	// æ¢å¤ä»¥å‰çš„å­—ä½“
 	pDC->SelectObject(pOldFont);
 }
-// ´òÓ¡Ò³½Å
+// æ‰“å°é¡µè„š
 void CVCadView::PrintPageFooter(CDC *pDC, CPrintInfo *pInfo)
 {
 	CVCadDoc* pDoc = GetDocument();
 	ASSERT_VALID(pDoc);
 	
-	// ÓÉÎÄµµ±£´æµÄÎ»ÖÃ»òÕß±êÌâºÍµ±Ç°µÄÒ³Âë¹¹³ÉÒ³½ÅµÄÎÄ±¾
-	// Èç¹ûÎÄµµÃ»ÓĞ±»±£´æ£¬Ôò´òÓ¡ÎÄµµµÄ±êÌâÃû³Æ£»·´Ö®£¬Ôò´òÓ¡ÎÄµµ±£´æµÄÎ»ÖÃ
+	// ç”±æ–‡æ¡£ä¿å­˜çš„ä½ç½®æˆ–è€…æ ‡é¢˜å’Œå½“å‰çš„é¡µç æ„æˆé¡µè„šçš„æ–‡æœ¬
+	// å¦‚æœæ–‡æ¡£æ²¡æœ‰è¢«ä¿å­˜ï¼Œåˆ™æ‰“å°æ–‡æ¡£çš„æ ‡é¢˜åç§°ï¼›åä¹‹ï¼Œåˆ™æ‰“å°æ–‡æ¡£ä¿å­˜çš„ä½ç½®
 	CString strFooter = pDoc->GetPathName();
 	CString strTitle = pDoc->GetTitle();
-	if(strTitle == "Untitled" || strTitle == "ÎŞ±êÌâ")
+	if(strTitle == "Untitled" || strTitle == "æ— æ ‡é¢˜")
 		strFooter = strTitle;
 	
-	// ÎÄ±¾×ó¶ÔÆë
+	// æ–‡æœ¬å·¦å¯¹é½
 	pDC->SetTextAlign(TA_LEFT);
-	// ´òÓ¡ÎÄ±¾
+	// æ‰“å°æ–‡æœ¬
 	pDC->TextOut(pInfo->m_rectDraw.left,
 		pInfo->m_rectDraw.bottom + 100, strFooter);
 	
-	// ÔÚÒ³½ÅÖĞÌí¼ÓÒ³ÂëĞÅÏ¢
+	// åœ¨é¡µè„šä¸­æ·»åŠ é¡µç ä¿¡æ¯
 	CString strPage;
-	strPage.Format("%s%d%s", "µÚ", pInfo->m_nCurPage, "Ò³");
-	// »ñÈ¡Ò³ÂëµÄ¿í¶È
+	strPage.Format("%s%d%s", "ç¬¬", pInfo->m_nCurPage, "é¡µ");
+	// è·å–é¡µç çš„å®½åº¦
 	CSize size = pDC->GetTextExtent(strFooter);
-	// Ò³ÂëÓÒ¶ÔÆë
+	// é¡µç å³å¯¹é½
 	pDC->TextOut(pInfo->m_rectDraw.right - size.cx,
 		pInfo->m_rectDraw.bottom + 100, strPage);
 
-	// »æÖÆÒ³½ÅµÄË®Æ½ÉÏ»®Ïß
+	// ç»˜åˆ¶é¡µè„šçš„æ°´å¹³ä¸Šåˆ’çº¿
 	TEXTMETRIC tm;
 	pDC->GetTextMetrics(&tm);
 	int y = pInfo->m_rectDraw.bottom + 90 + tm.tmHeight;
@@ -808,7 +847,7 @@ void CVCadView::OnViewCommand(UINT m_nID)
 
 	if( m_pCmd ){
 		delete m_pCmd ;
-		// ÇĞ¼Ç£ºÔÚÊ¹ÓÃÒ»¸öÃüÁîÖ®Ç°±ØĞëÒªÇå³ıÉÏÒ»¸öÃüÁî
+		// åˆ‡è®°ï¼šåœ¨ä½¿ç”¨ä¸€ä¸ªå‘½ä»¤ä¹‹å‰å¿…é¡»è¦æ¸…é™¤ä¸Šä¸€ä¸ªå‘½ä»¤
 		m_pCmd = NULL; 
 	}
 	switch(m_nID)
@@ -818,7 +857,7 @@ void CVCadView::OnViewCommand(UINT m_nID)
 			if( !(m_pCmd = new CZoomRgnCmd()) )
 				AfxMessageBox("Failed!");
 //			pDoc->SetModifiedFlag(TRUE) ;
-			::Prompt("ÇëÊäÈëÒÆ¶¯µÄÆğÊ¼µã£º") ;
+			::Prompt("è¯·è¾“å…¥ç§»åŠ¨çš„èµ·å§‹ç‚¹ï¼š") ;
 			break;
 		}
 		case ID_VIEW_ZOOMIN:
@@ -858,7 +897,7 @@ void CVCadView::ZoomAll()
 	CVCadDoc* pDoc = GetDocument();
 	ASSERT_VALID(pDoc);
 	CDC* pDC = GetDC() ;
-	//Ó³ÉäÄ£Ê½ÒªÒ»ÖÂ
+	//æ˜ å°„æ¨¡å¼è¦ä¸€è‡´
 	pDC->SetMapMode(MM_TEXT) ;
 
 	CRect rc ;
@@ -874,10 +913,10 @@ void CVCadView::ZoomAll()
 	BOX2D pBox ;
 	POSITION pos;
 	pos = pDoc->m_EntityList.GetHeadPosition();
-	// Èç¹ûÁ´±íÖĞ²»´æÔÚÈÎºÎÍ¼Ôª£¬Ôò²»×öÈÎºÎ²Ù×÷Ö±½Ó·µ»Ø
+	// å¦‚æœé“¾è¡¨ä¸­ä¸å­˜åœ¨ä»»ä½•å›¾å…ƒï¼Œåˆ™ä¸åšä»»ä½•æ“ä½œç›´æ¥è¿”å›
 	if(pos == NULL)  
 		return ;
-	// Í¨¹ı¸÷Í¼ÔªµÄ°üÎ§ºĞÀ´¼ÆËã³öËùÓĞÍ¼ÔªµÄ°üÎ§ºĞ
+	// é€šè¿‡å„å›¾å…ƒçš„åŒ…å›´ç›’æ¥è®¡ç®—å‡ºæ‰€æœ‰å›¾å…ƒçš„åŒ…å›´ç›’
 	while(pos != NULL)
 	{
 		MEntity* pEntity = (MEntity*)(pDoc->m_EntityList.GetNext(pos)) ;
@@ -887,10 +926,10 @@ void CVCadView::ZoomAll()
 		if(MaxX<pBox.max[0]) MaxX = pBox.max[0] ;
 		if(MaxY<pBox.max[1]) MaxY = pBox.max[1] ;
 	}
-	//ÖØĞÂ¼ÆËãÔ­µã
+	//é‡æ–°è®¡ç®—åŸç‚¹
 	m_dOrgX = (MaxX + MinX)/2. ;
 	m_dOrgY = (MaxY + MinY)/2. ;
-	//ÖØĞÂ¼ÆËã±ÈÀıÒò×Ó
+	//é‡æ–°è®¡ç®—æ¯”ä¾‹å› å­
 	double scalex = fabs((MaxX - MinX)/(rc.right-rc.left)) ;
 	double scaley = fabs((MaxY - MinY)/(rc.bottom-rc.top )) ;
 	if(scalex>scaley)
@@ -927,7 +966,7 @@ void CVCadView::DrawCoord(CDC *pDC)
 	pDC->MoveTo(sOrgp) ;
 	pDC->LineTo(sYp) ;
 
-	//»­¼ıÍ·
+	//ç”»ç®­å¤´
 	CBrush * pnew = new CBrush;
 	pnew->CreateSysColorBrush(BLACK_BRUSH);
 	CBrush* pbrsh = (CBrush*) pDC->SelectObject(pnew);
@@ -969,17 +1008,17 @@ void CVCadView::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 
 	CView::OnKeyDown(nChar, nRepCnt, nFlags);
 }
-//ÁÙÊ±É¾³ı¹¦ÄÜ
+//ä¸´æ—¶åˆ é™¤åŠŸèƒ½
 void CVCadView::Erase()
 {
-	//»ñµÃÎÄµµÀàµÄÖ¸Õë
+	//è·å¾—æ–‡æ¡£ç±»çš„æŒ‡é’ˆ
 	CVCadDoc * pDoc = GetDocument() ;
 	ASSERT_VALID(pDoc) ;
 	
 	MEntity* pSelEntity = NULL ;
 	POSITION pos = NULL ;
-	//ÔÚÁ´±íÖĞ²éÕÒ±»Ìí¼Óµ½Ñ¡Ôñ¼¯ÖĞÍ¼Ôª
-	//²¢½«Æä´ÓÁ´±íÖĞÓÀÔ¶É¾³ı
+	//åœ¨é“¾è¡¨ä¸­æŸ¥æ‰¾è¢«æ·»åŠ åˆ°é€‰æ‹©é›†ä¸­å›¾å…ƒ
+	//å¹¶å°†å…¶ä»é“¾è¡¨ä¸­æ°¸è¿œåˆ é™¤
 	if(pDoc->m_selectArray.GetSize() > 0)
 	{
 		g_pDoc->SetModifiedFlag(TRUE);
@@ -1013,9 +1052,9 @@ void CVCadView::Erase()
 		pEraseEnt->m_nOperationNum = m_nCurrentOperation;
 	}
 
-	//Çå¿ÕÑ¡Ôñ¼¯
+	//æ¸…ç©ºé€‰æ‹©é›†
 	pDoc->m_selectArray.RemoveAll() ;
-	//¸üĞÂÎÄµµ£¬ÖØĞÂ»æÖÆ
+	//æ›´æ–°æ–‡æ¡£ï¼Œé‡æ–°ç»˜åˆ¶
 	pDoc->UpdateAllViews(NULL) ;
 }
 
@@ -1025,7 +1064,7 @@ void CVCadView::OnUpdateModifyErase(CCmdUI* pCmdUI)
 	OnUpdateEditCopy(pCmdUI);
 }
 
-//	´ò¿ªÎÄ¼ş	
+//	æ‰“å¼€æ–‡ä»¶	
 void CVCadView::OnFileOpen() 
 {
 	// TODO: Add your command handler code here
@@ -1033,12 +1072,12 @@ void CVCadView::OnFileOpen()
 
 	BOOL	ret = FALSE;
 
-	//	Èç¹ûµ±Ç°ÎÄ¼şÎª±£´æÔòÏÈ±£´æ
+	//	å¦‚æœå½“å‰æ–‡ä»¶ä¸ºä¿å­˜åˆ™å…ˆä¿å­˜
 	int	status = 0;
 	ret = pDocument->IsModified();
 	if(ret == TRUE) 
 	{
-	    status = AfxMessageBox(" ÎÄ¼şÒÑĞŞ¸Ä,ÊÇ·ñ±£´æÎÄ¼ş?",MB_YESNOCANCEL);
+	    status = AfxMessageBox(" æ–‡ä»¶å·²ä¿®æ”¹,æ˜¯å¦ä¿å­˜æ–‡ä»¶?",MB_YESNOCANCEL);
 	    if(status == IDCANCEL) 
 		{
 			return;
@@ -1049,7 +1088,7 @@ void CVCadView::OnFileOpen()
 	    }
 	}
 
-	extern BOOL GetCADName(BOOL bIsOpen,CString& sFileName);	//	µÃµ½CADÎÄ¼şÃû
+	extern BOOL GetCADName(BOOL bIsOpen,CString& sFileName);	//	å¾—åˆ°CADæ–‡ä»¶å
 	CString sFileName;
     if (GetCADName(TRUE,sFileName))
 	{
@@ -1069,7 +1108,7 @@ void CVCadView::OnFileOpen()
 		loadArchive.m_pDocument = pDocument;
 		loadArchive.m_bForceFlat = TRUE;
 
-		//	¶ÁÈ¡ÎÄ¼ş
+		//	è¯»å–æ–‡ä»¶
 		if (pFile->GetLength() != 0)
 		{
 			GetDocument()->BeginWaitCursor();
@@ -1077,35 +1116,35 @@ void CVCadView::OnFileOpen()
 			GetDocument()->EndWaitCursor();
 		}
 
-		pDocument->SetTitle(sFileName);	//	ÉèÖÃ´°¿Ú±êÌâ
-		AfxGetApp()->AddToRecentFileList(sFileName);	//	Ìí¼Ó×îĞÂÎÄ¼şÁĞ±í
+		pDocument->SetTitle(sFileName);	//	è®¾ç½®çª—å£æ ‡é¢˜
+		AfxGetApp()->AddToRecentFileList(sFileName);	//	æ·»åŠ æœ€æ–°æ–‡ä»¶åˆ—è¡¨
 
 		loadArchive.Close();
 		pDocument->ReleaseFile(pFile, FALSE);
 
 		pDocument->SetModifiedFlag(FALSE);
 
-		Invalidate();	//	Ë¢ĞÂ»æÍ¼Çø
+		Invalidate();	//	åˆ·æ–°ç»˜å›¾åŒº
 	}
 }
 
-//	±£´æÎÄ¼ş
+//	ä¿å­˜æ–‡ä»¶
 void CVCadView::OnFileSave() 
 {
 	// TODO: Add your command handler code here
 	CVCadDoc* pDoc = GetDocument();
 	CFileException fe;
 	
-	//	Èç¹ûÎÄ¼şÎ´ÃüÃû£¬Ôòµ÷¡°Áí´æÎª¡±º¯Êı	
+	//	å¦‚æœæ–‡ä»¶æœªå‘½åï¼Œåˆ™è°ƒâ€œå¦å­˜ä¸ºâ€å‡½æ•°	
 	CString sFileName=pDoc->GetTitle();
 	sFileName.MakeLower();
-	if(sFileName=="untitled" || sFileName == "ÎŞ±êÌâ")
+	if(sFileName=="untitled" || sFileName == "æ— æ ‡é¢˜")
 	{
 		OnFileSaveAs();
 		return;
 	}
 
-	//	´´½¨ÎÄ¼ş
+	//	åˆ›å»ºæ–‡ä»¶
 	CFile* pFile = new CFile(sFileName, CFile::modeCreate |
 		CFile::modeWrite | CFile::shareExclusive);//, &fe);
 
@@ -1116,10 +1155,10 @@ void CVCadView::OnFileSave()
 	saveArchive.m_pDocument = pDoc;
 	saveArchive.m_bForceFlat = TRUE;
 
-	//	±£´æÎÄ¼ş
+	//	ä¿å­˜æ–‡ä»¶
 	pDoc->Serialize(saveArchive);	
 
-	//ÉèÖÃÎÄµµ¸üĞÂ±ê¼Ç
+	//è®¾ç½®æ–‡æ¡£æ›´æ–°æ ‡è®°
 	pDoc->SetModifiedFlag(FALSE);
 
 	saveArchive.Close();
@@ -1127,13 +1166,13 @@ void CVCadView::OnFileSave()
 
 }
 
-//	Áí´æÎÄ¼ş
+//	å¦å­˜æ–‡ä»¶
 void CVCadView::OnFileSaveAs() 
 {
 	CVCadDoc* pDoc = GetDocument();
 
 	// TODO: Add your command handler code here
-	extern BOOL GetCADName(BOOL bIsOpen,CString& sFileName);	//	µÃµ½CADÎÄ¼şÃû
+	extern BOOL GetCADName(BOOL bIsOpen,CString& sFileName);	//	å¾—åˆ°CADæ–‡ä»¶å
 	CString sFileName;
     if (GetCADName(FALSE,sFileName))
 	{
@@ -1189,15 +1228,15 @@ void CVCadView::OnLButtonUp(UINT nFlags, CPoint point)
 	Position basePos, desPos;
 	ScreentoWorld(m_basePos, basePos);
 	ScreentoWorld(m_desPos, desPos);
-	CDC*	pDC = g_pView->GetDC(); // »ñµÃÊÓÀàµÄÉè±¸»·¾³Ö¸Õë
+	CDC*	pDC = g_pView->GetDC(); // è·å¾—è§†ç±»çš„è®¾å¤‡ç¯å¢ƒæŒ‡é’ˆ
 
-	// ½«Ñ¡Ôñ¼¯ÖĞµÄÍ¼ÔªÒÆ¶¯µ½Ä¿±êÎ»ÖÃ²¢½øĞĞ»æÖÆ
+	// å°†é€‰æ‹©é›†ä¸­çš„å›¾å…ƒç§»åŠ¨åˆ°ç›®æ ‡ä½ç½®å¹¶è¿›è¡Œç»˜åˆ¶
 	int i, n;
 	if(m_bDragging) {
 		for(n = g_pDoc->m_selectArray.GetSize(), i = 0; i < n; i++)
 		{
 			MEntity*	pEntity = (MEntity*)g_pDoc->m_selectArray[i];
-			pEntity->Draw(pDC,dmInvalid); // Çå³ıÔ­À´Î»ÖÃÉÏµÄÍ¼Ôª
+			pEntity->Draw(pDC,dmInvalid); // æ¸…é™¤åŸæ¥ä½ç½®ä¸Šçš„å›¾å…ƒ
 			pEntity = pEntity->GetShowEnt();
 			BOX2D box;
 			pEntity->GetBox(&box);
@@ -1206,19 +1245,19 @@ void CVCadView::OnLButtonUp(UINT nFlags, CPoint point)
 			WorldtoScreen(box.max, p2);
 			CRect rect(p1, p2);
 			InvalidateRect(rect, 1);
-//			pEntity->Move(basePos, desPos); // ½«Í¼ÔªÒÆ¶¯µ½Ä¿±êÎ»ÖÃ
-//			pEntity->Draw(pDC,dmNormal); // ÔÚÄ¿±êÎ»ÖÃÉÏ»æÖÆÍ¼Ôª
+//			pEntity->Move(basePos, desPos); // å°†å›¾å…ƒç§»åŠ¨åˆ°ç›®æ ‡ä½ç½®
+//			pEntity->Draw(pDC,dmNormal); // åœ¨ç›®æ ‡ä½ç½®ä¸Šç»˜åˆ¶å›¾å…ƒ
 
 			MEntity * pNewEnt = pEntity->Copy();
-			pNewEnt->Move(basePos, desPos); // ½«Í¼ÔªÒÆ¶¯µ½Ä¿±êÎ»ÖÃ
-			pNewEnt->Draw(pDC,dmNormal); // ÔÚÄ¿±êÎ»ÖÃÉÏ»æÖÆÍ¼Ôª
-			g_pDoc->SetModifiedFlag(TRUE); // ±êÖ¾ÎÄµµÊı¾İÒÑ±»ĞŞ¸Ä
+			pNewEnt->Move(basePos, desPos); // å°†å›¾å…ƒç§»åŠ¨åˆ°ç›®æ ‡ä½ç½®
+			pNewEnt->Draw(pDC,dmNormal); // åœ¨ç›®æ ‡ä½ç½®ä¸Šç»˜åˆ¶å›¾å…ƒ
+			g_pDoc->SetModifiedFlag(TRUE); // æ ‡å¿—æ–‡æ¡£æ•°æ®å·²è¢«ä¿®æ”¹
 			pNewEnt->m_nOperationNum = g_pView->m_nCurrentOperation;
 			pEntity->Append(pNewEnt);
 		}
-		g_pDoc->m_selectArray.RemoveAll(); //  Çå¿ÕÑ¡Ôñ¼¯
-//		g_pDoc->SetModifiedFlag(TRUE); // ±êÖ¾ÎÄµµÊı¾İÒÑ±»ĞŞ¸Ä
-		g_pView->ReleaseDC(pDC); // ÊÍ·ÅÊÓÀàµÄÉè±¸»·¾³Ö¸Õë
+		g_pDoc->m_selectArray.RemoveAll(); //  æ¸…ç©ºé€‰æ‹©é›†
+//		g_pDoc->SetModifiedFlag(TRUE); // æ ‡å¿—æ–‡æ¡£æ•°æ®å·²è¢«ä¿®æ”¹
+		g_pView->ReleaseDC(pDC); // é‡Šæ”¾è§†ç±»çš„è®¾å¤‡ç¯å¢ƒæŒ‡é’ˆ
 	}
 
 	m_bDragging  = FALSE;
@@ -1294,7 +1333,7 @@ void CVCadView::OnEditPaste()
 		MEntity * pNew = pCopyEntity->Copy();
 		pNew->Move(Position(0,0), Position(10,10));
 		pNew->Draw(pDC, dmNormal);
-		g_pDoc->m_EntityList.AddTail(pNew); // ½«Ö¸ÕëÌí¼Óµ½Í¼ÔªÁ´±í
+		g_pDoc->m_EntityList.AddTail(pNew); // å°†æŒ‡é’ˆæ·»åŠ åˆ°å›¾å…ƒé“¾è¡¨
 		g_pDoc->SetModifiedFlag(TRUE);// set modified flag ;
 		pNew->m_nOperationNum = g_pView->m_nCurrentOperation;
 	}
@@ -1348,11 +1387,11 @@ void CVCadView::OnUpdateEditUndo(CCmdUI* pCmdUI)
 }
 
 
-void CVCadView::OnEditManhadun() //Âü¹ş¶Ù»¯
+void CVCadView::OnEditManhadun() //æ›¼å“ˆé¡¿åŒ–
 {
 	CDC * pDC = GetDC();
-	//Ëã·¨£º´ÓÆğµã¿ªÊ¼£¬Èç¹û&x > &yÔòÑØ×ÅX×ß£»Èç¹û·½Ïò²»Í¬Ôò²»Ìí¼Ó£»Èç¹ûÁ½µãÍ¬X»òÍ¬YÔò¸Ä±äÉÏÒ»µãµÄY»òX;
-	//      Ìí¼ÓÖÕµã£¬Ëã·¨½áÊø¡£
+	//ç®—æ³•ï¼šä»èµ·ç‚¹å¼€å§‹ï¼Œå¦‚æœ&x > &yåˆ™æ²¿ç€Xèµ°ï¼›å¦‚æœæ–¹å‘ä¸åŒåˆ™ä¸æ·»åŠ ï¼›å¦‚æœä¸¤ç‚¹åŒXæˆ–åŒYåˆ™æ”¹å˜ä¸Šä¸€ç‚¹çš„Yæˆ–X;
+	//      æ·»åŠ ç»ˆç‚¹ï¼Œç®—æ³•ç»“æŸã€‚
 	for( int i = 0 ; i < g_pDoc->m_selectArray.GetSize() ; i++ ){
 		MEntity*	pSelEntity = (MEntity*)g_pDoc->m_selectArray[i] ;
 		if(pSelEntity->GetType() == etConnect)
@@ -1360,8 +1399,8 @@ void CVCadView::OnEditManhadun() //Âü¹ş¶Ù»¯
 			pSelEntity->Draw(pDC, dmInvalid);
 			MEntity * pManhadun = pSelEntity->Copy();
 			((MConnect*)pManhadun)->Manhadunize();
-			pManhadun->Draw(pDC,dmNormal); // ÔÚÄ¿±êÎ»ÖÃÉÏ»æÖÆÍ¼Ôª
-			g_pDoc->SetModifiedFlag(TRUE); // ±êÖ¾ÎÄµµÊı¾İÒÑ±»ĞŞ¸Ä
+			pManhadun->Draw(pDC,dmNormal); // åœ¨ç›®æ ‡ä½ç½®ä¸Šç»˜åˆ¶å›¾å…ƒ
+			g_pDoc->SetModifiedFlag(TRUE); // æ ‡å¿—æ–‡æ¡£æ•°æ®å·²è¢«ä¿®æ”¹
 			pManhadun->m_nOperationNum = g_pView->m_nCurrentOperation;
 			pSelEntity->Append(pManhadun);
 		}
@@ -1374,7 +1413,7 @@ void CVCadView::OnEditManhadun() //Âü¹ş¶Ù»¯
 void CVCadView::OnUpdateEditManhadun(CCmdUI* pCmdUI) 
 {
 	// TODO: Add your command update UI handler code here
-	//Èç¹ûÑ¡ÖĞµÄÊµÌå¼¯ÖĞÓĞÁ¬½Ó£¬ÔòÓĞĞ§£»·ñÔòÎŞĞ§
+	//å¦‚æœé€‰ä¸­çš„å®ä½“é›†ä¸­æœ‰è¿æ¥ï¼Œåˆ™æœ‰æ•ˆï¼›å¦åˆ™æ— æ•ˆ
 	BOOL bValid = FALSE;
 	for( int i = 0 ; i < g_pDoc->m_selectArray.GetSize() ; i++ ){
 		MEntity*	pSelEntity = (MEntity*)g_pDoc->m_selectArray[i] ;
@@ -1410,7 +1449,7 @@ void CVCadView::OnMenuitem32807()
 void CVCadView::OnMenuitem32808() 
 {
 	// TODO: Add your command handler code here
-	//³İ¿íÏµÊıÊı±íµÄ³ÌĞò»¯
+	//é½¿å®½ç³»æ•°æ•°è¡¨çš„ç¨‹åºåŒ–
 	CGearParamDlg dlg;
 	dlg.DoModal();
 }
@@ -1420,7 +1459,7 @@ void CVCadView::OnMenuitem32808()
 
 void CVCadView::OnMenuitem32809() 
 {
-	// Ë«ÏßĞÔ²åÖµ
+	// åŒçº¿æ€§æ’å€¼
 	CInterDlg dlg;
 
 	dlg.DoModal();	
@@ -1428,7 +1467,7 @@ void CVCadView::OnMenuitem32809()
 
 void CVCadView::OnMenuitem32810() 
 {
-	//×îĞ¡¶ş³Ë
+	//æœ€å°äºŒä¹˜
 	OnCreateEntity(32810);
 }
 
@@ -1599,7 +1638,7 @@ void CVCadView::OnMenuitem32814()
 	ReleaseDC(pDC);
 }
 
-//BÑùÌõ·´Ëã
+//Bæ ·æ¡åç®—
 void CVCadView::OnMenuitem32815() 
 {
 	// TODO: Add your command handler code here
@@ -1610,5 +1649,5 @@ void CVCadView::OnMenuitem32815()
 void CVCadView::OnInnerpt() 
 {
 	OnCreateEntity(32816);
-	//ÇøÓòÊ¶±ğ
+	//åŒºåŸŸè¯†åˆ«
 }
