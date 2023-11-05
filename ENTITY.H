@@ -519,7 +519,6 @@ public:
 	void		Init();
 
 	void Draw(CDC* pDC, int drawMode = dmNormal);
-
 	BOOL Pick(const Position& pos, const double pick_radius);
 	void Move(const Position& basePos, const Position& desPos, BOOL bTemp = FALSE);
 	void GetBox(BOX2D* pBox);

@@ -77,6 +77,18 @@ BEGIN_MESSAGE_MAP(CVCadView, CView)
 					ID_INSERT_COMB, OnCreateEntity)
 	ON_UPDATE_COMMAND_UI_RANGE(ID_CREATE_LINE, 
 					ID_INSERT_COMB, OnUpdateCreateCommand)
+
+
+	/********************************************************************/
+	/********************************************************************/
+	// 由孙源添加，目标为创建相互联系，使工具栏内【取消组合】由灰色不可点击转为可点击状态
+	ON_COMMAND_RANGE(ID_INSERT_COMB,
+		ID_DELETE_COMB, OnCreateEntity)
+	ON_UPDATE_COMMAND_UI_RANGE(ID_INSERT_COMB,
+		ID_DELETE_COMB, OnUpdateCreateCommand)
+	/********************************************************************/
+	/********************************************************************/
+
 	ON_COMMAND_RANGE(ID_MODIFY_MOVE, 
 					ID_MODIFY_ERASE, OnModifyEntity)
 	ON_UPDATE_COMMAND_UI_RANGE(ID_MODIFY_MOVE, 
@@ -249,7 +261,7 @@ void CVCadView::OnCreateEntity(UINT m_nID)
 		}
 		case 32811:
 		{
-			m_pCmd = new CCreateFitCurve(32811);//Bezier
+			m_pCmd = new CCreateFitCurve(32811);
 			break;
 		}
 		case 32812:
@@ -275,6 +287,11 @@ void CVCadView::OnCreateEntity(UINT m_nID)
 		case ID_INSERT_COMB:
 		{
 			m_pCmd = new CInsertComb();
+			break;
+		}
+		case ID_DELETE_COMB:
+		{
+			m_pCmd = new CDeleteComb();
 			break;
 		}
 	}
@@ -348,6 +365,12 @@ void CVCadView::OnUpdateCreateCommand(CCmdUI* pCmdUI)
 		case ID_INSERT_COMB:
 		{
 			if ((m_pCmd != NULL && m_pCmd->GetType() == ctInsertComb))
+				flag = 1;
+			break;
+		}
+		case ID_DELETE_COMB:
+		{
+			if ((m_pCmd != NULL && m_pCmd->GetType() == ctDeleteComb))
 				flag = 1;
 			break;
 		}

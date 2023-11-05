@@ -306,6 +306,7 @@ BOOL CMainFrame::CreatePropertyBar()
 		RGB(0,0,0),"黑色") ;
 	// 设置当前缺省的选项
 	m_wndPropBar.m_wndLineColorCmb.SetCurSel(6) ;
+
 	// 绘制线宽组合框
 	m_wndPropBar.GetItemRect(6,&rc) ;
 	rc.bottom = rc.top + nDropHeight ;

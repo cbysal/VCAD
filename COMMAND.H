@@ -20,6 +20,7 @@ enum ECommandType	// 命令类
 	ctCreateConnect = 9,    //连接
 	ctCreateComb = 10,
 	ctInsertComb = 11,
+	ctDeleteComb = 12,
 	// ...其他创建类型
 	//  修改命令类
 	ctMove = 14,			// 移动
