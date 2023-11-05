@@ -16,71 +16,70 @@
 static char THIS_FILE[] = __FILE__;
 #endif
 
-CCreateComb::CCreateComb()
+CDeleteComb::CDeleteComb()
 	: m_LeftTop(0, 0), m_RightBottom(0, 0)
 {
 	m_nStep = 0; // 初始化操作步为 0
 }
 
-CCreateComb::~CCreateComb()
+CDeleteComb::~CDeleteComb()
 {
 }
 
-int CCreateComb::GetType()
+int CDeleteComb::GetType()
 {
 	return ctCreateComb;
 }
 
-int	CCreateComb::OnLButtonDown(UINT nFlags, const Position& pos)
+int	CDeleteComb::OnLButtonDown(UINT nFlags, const Position& pos)
 {
-	m_nStep++; // 每次单击鼠标左键时操作步加 1 
-	switch (m_nStep) // 根据操作步执行相应的操作
-	{
-	case 1:
-	{
-		m_LeftTop = m_RightBottom = pos;
-		::Prompt("请输入矩形的右下角点：");
-		break;
-	}
-	case 2:
-	{
-		CDC* pDC = g_pView->GetDC(); // 得到设备环境指针 
-		m_RightBottom = pos;
+	CDC* pDC = g_pView->GetDC(); // 得到设备环境指针 
+	CTextInputDlg dlg1;
+	dlg1.DoModal();
 
-		g_pDoc->OnLButtonDown(MK_LBUTTON, m_LeftTop);
-		g_pDoc->OnLButtonDown(MK_LBUTTON, m_RightBottom);
-
-		std::vector<MEntity*> entities;
-		for (int i = 0; i < g_pDoc->m_selectArray.GetSize(); i++) {
-			entities.push_back(((MEntity*)g_pDoc->m_selectArray.GetAt(i))->Copy());
+	CComb* oldComb = NULL;    // 新建一个CComb类型的指针变量并赋值为NULL
+	int ListLength_1 = g_pDoc->m_EntityList.GetCount();
+	MEntity* SYentityHead_beginning = (MEntity*)g_pDoc->m_EntityList.GetHead(); 
+	POSITION position = g_pDoc->m_EntityList.GetHeadPosition();  // position用于储存图元链表的开始地址
+	while (position != NULL) {  // 当position不为空，即图元链表中存在已有项时，进入while循环
+		MEntity* entity = (MEntity*)g_pDoc->m_EntityList.GetAt(position);  // 利用图元的地址循环索引图元
+		if (entity->GetType() == etComb) {  // 如果entity数据类型是etComb则进入if
+			CComb* comb = (CComb*)entity;  // 为了保护entity，将entity拷贝到comb
+			if (!comb->GetName().Compare(dlg1.m_text)) // 将comb的name与dlg1对话框输入的名字进行对比
+			{
+				oldComb = (CComb*)entity;   // 当comb的name与dlg1对话框输入的名字一致时，将entity拷贝到oldComb
+				break;
+			}
 		}
-
-		CTextInputDlg dlg;
-		dlg.DoModal();
-
-		CComb* pComb = new CComb(dlg.m_text, m_LeftTop, m_RightBottom, entities);
-		g_pView->Erase();
-		pComb->Draw(pDC, dmNormal);
-		g_pDoc->m_EntityList.AddTail(pComb); // 将指针添加到图元链表
-		g_pDoc->SetModifiedFlag(TRUE);// set modified flag ;
-		pComb->m_nOperationNum = g_pView->m_nCurrentOperation;
-
-		g_pView->ReleaseDC(pDC); // 释放设备环境指针
-
-		m_nStep = 0;  // 将操作步重置为 0
-		::Prompt("请输入矩形的左上角点：");
-		// 擦除在拖动状态时显示的橡皮线
-		MRectangle* pTempRect = new MRectangle(m_LeftTop, m_RightBottom);
-		pTempRect->Draw(pDC, dmDrag);
-		delete pTempRect;
-		break;
-	}
+		g_pDoc->m_EntityList.GetNext(position); // 前往下一个图元的地址
 
 	}
+	if (oldComb == NULL) {
+		char msg[256];
+		sprintf(msg, "不存在组合: %s", dlg1.m_text);
+		MessageBox(NULL, msg, "错误", MB_OK);
+		return 0;
+	}
+
+	g_pDoc->m_EntityList.RemoveAt(position);  // 将与对话框内容匹配的指定组合从图元列表删除
+	int ListLength_2 = g_pDoc->m_EntityList.GetCount();
+	g_pView->Erase();
+
+	oldComb->Draw(pDC, dmNormal);
+	for (int i = 0; i < ListLength_2; i++) {
+		g_pDoc->m_EntityList.AddTail(oldComb->GetEntities()[i]); // 将指针添加到图元链表
+	}
+	g_pDoc->SetModifiedFlag(TRUE);// set modified flag ;
+	for (int i = 0; i < ListLength_2; i++) {
+		oldComb->GetEntities()[i]->m_nOperationNum = g_pView->m_nCurrentOperation;
+	}
+
+	g_pView->ReleaseDC(pDC); // 释放设备环境指针
+
 	return 0;
 }
 
-int	CCreateComb::OnMouseMove(UINT nFlags, const Position& pos)
+int	CDeleteComb::OnMouseMove(UINT nFlags, const Position& pos)
 {
 	::SetCursor(AfxGetApp()->LoadCursor(IDC_DRAW_RECT));
 
@@ -118,7 +117,6 @@ int	CCreateComb::OnMouseMove(UINT nFlags, const Position& pos)
 		// 创建临时对象，根据当前位置绘制一条橡皮线
 		MRectangle* pTempRect2 = new MRectangle(m_LeftTop, curPos);
 		pTempRect2->Draw(pDC, dmDrag);
-		delete pTempRect2;
 
 		g_pView->ReleaseDC(pDC); // 释放设备环境指针			
 
@@ -129,7 +127,7 @@ int	CCreateComb::OnMouseMove(UINT nFlags, const Position& pos)
 	return 0;
 }
 // 单击鼠标右键取消当前的操作
-int	CCreateComb::OnRButtonDown(UINT nFlags, const Position& pos)
+int	CDeleteComb::OnRButtonDown(UINT nFlags, const Position& pos)
 {
 	// 如果当前的操作步为 1 ，那么要在结束本次操作前擦除上次鼠标移动时绘制的橡皮线
 	if (m_nStep == 1) {
@@ -145,7 +143,7 @@ int	CCreateComb::OnRButtonDown(UINT nFlags, const Position& pos)
 	return 0;
 }
 // 调用Cancel 函数取消本次操作
-int CCreateComb::Cancel()
+int CDeleteComb::Cancel()
 {
 	// 如果当前的操作步为 1 ，那么要在结束本次操作前擦除上次鼠标移动时绘制的橡皮线
 	if (m_nStep == 1) {

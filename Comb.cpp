@@ -80,7 +80,6 @@ void CComb::Draw(CDC* pDC, int drawMode /* = dmNormal */)
 	}
 }
 
-
 BOOL CComb::Pick(const Position& pos, const double pick_radius)
 {
 	Position objPos = pos;

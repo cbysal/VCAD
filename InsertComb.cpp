@@ -9,7 +9,6 @@
 #include "CreateCmd.h"
 #include "Windows.h"
 #include "TextInputDlg.h"
-#include <iostream>
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -38,19 +37,19 @@ int	CInsertComb::OnLButtonDown(UINT nFlags, const Position& pos)
 	dlg1.DoModal();
 	dlg2.DoModal();
 
-	CComb* oldComb = NULL;    // 新建一个CComb类型的指针变量并赋值为NULL
-	POSITION position = g_pDoc->m_EntityList.GetHeadPosition();  // position用于储存图元链表的开始地址？
-	while (position != NULL) {  // 当position不为空，即图元链表中存在已有项时，进入while循环
-		MEntity* entity = (MEntity*)g_pDoc->m_EntityList.GetAt(position);  // 利用图元的地址循环索引图元
-		if (entity->GetType() == etComb) {  // 如果entity数据类型是etComb则进入if
-			CComb* comb = (CComb*)entity;  // 为了保护entity，将entity拷贝到comb
-			if (!comb->GetName().Compare(dlg1.m_text)) // 将comb的name与dlg1对话框输入的名字进行对比
+	CComb* oldComb = NULL;
+	POSITION position = g_pDoc->m_EntityList.GetHeadPosition();
+	while (position != NULL) {
+		MEntity* entity = (MEntity*)g_pDoc->m_EntityList.GetAt(position);
+		if (entity->GetType() == etComb) {
+			CComb* comb = (CComb*)entity;
+			if (!comb->GetName().Compare(dlg1.m_text))
 			{
-				oldComb = (CComb*)entity;   // 当comb的name与dlg1对话框输入的名字一致时，将entity拷贝到oldComb
+				oldComb = (CComb*)entity;
 				break;
 			}
 		}
-		g_pDoc->m_EntityList.GetNext(position); // 前往下一个图元的地址
+		g_pDoc->m_EntityList.GetNext(position);
 	}
 	if (oldComb == NULL) {
 		char msg[256];
@@ -59,7 +58,7 @@ int	CInsertComb::OnLButtonDown(UINT nFlags, const Position& pos)
 		return 0;
 	}
 
-	std::vector<MEntity*> newEntities;  // 新建一个向量变量newEntities
+	std::vector<MEntity*> newEntities;
 	for (MEntity* entity : oldComb->GetEntities()) {
 		newEntities.push_back(entity->Copy());
 	}
