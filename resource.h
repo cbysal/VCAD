@@ -118,6 +118,7 @@
 #define ID_CMD_COPY_BMP                 32817
 #define ID_CREATE_COMB                  32818
 #define ID_INSERT_COMB                  32819
+#define ID_DELETE_COMB                  32820
 #define IDW_LINECOLOR                   59143
 #define IDW_LINEWIDTH                   59144
 #define IDW_LINESTYLE                   59145

@@ -60,6 +60,7 @@ int	CCreateComb::OnLButtonDown(UINT nFlags, const Position& pos)
 
 		CComb* pComb = new CComb(dlg.m_text, m_LeftTop, m_RightBottom, entities);
 		g_pView->Erase();
+
 		pComb->Draw(pDC, dmNormal);
 		g_pDoc->m_EntityList.AddTail(pComb); // 将指针添加到图元链表
 		g_pDoc->SetModifiedFlag(TRUE);// set modified flag ;

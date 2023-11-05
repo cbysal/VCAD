@@ -208,6 +208,7 @@
       <MinimalRebuild>false</MinimalRebuild>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <FunctionLevelLinking>true</FunctionLevelLinking>
+      <BufferSecurityCheck>true</BufferSecurityCheck>
     </ClCompile>
     <Midl>
       <SuppressStartupBanner>true</SuppressStartupBanner>
@@ -251,6 +252,7 @@
     <ClCompile Include="CREATEPOLYGON.CPP" />
     <ClCompile Include="CreateRect.cpp" />
     <ClCompile Include="CREATETEXT.CPP" />
+    <ClCompile Include="DeleteComb.cpp" />
     <ClCompile Include="Dxf.cpp" />
     <ClCompile Include="ECT2DModelDlg.cpp" />
     <ClCompile Include="ELLIPSE.CPP" />

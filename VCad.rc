@@ -192,8 +192,10 @@ BEGIN
         MENUITEM "多边形(&P)",                     ID_CREATE_POLYGON
         MENUITEM "图块(&B)",                      ID_CREATE_BLOCK
         MENUITEM "连接(&N)",                      ID_CREATE_CONNECT
+        MENUITEM SEPARATOR
         MENUITEM "组合",                          ID_CREATE_COMB
         MENUITEM "插入组合",                        ID_INSERT_COMB
+        MENUITEM "取消组合",                        ID_DELETE_COMB
     END
     POPUP "修改(&M)"
     BEGIN
