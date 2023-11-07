@@ -59,6 +59,7 @@ int	CCreateComb::OnLButtonDown(UINT nFlags, const Position& pos)
 		dlg.DoModal();
 
 		CComb* pComb = new CComb(dlg.m_text, m_LeftTop, m_RightBottom, entities);
+		pComb->Serialize(dlg.m_text);//序列化
 		g_pView->Erase();
 		pComb->Draw(pDC, dmNormal);
 		g_pDoc->m_EntityList.AddTail(pComb); // 将指针添加到图元链表

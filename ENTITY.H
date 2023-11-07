@@ -522,6 +522,6 @@ public:
 	BOOL Pick(const Position& pos, const double pick_radius);
 	void Move(const Position& basePos, const Position& desPos, BOOL bTemp = FALSE);
 	void GetBox(BOX2D* pBox);
-	void Serialize(CArchive& ar);
+	void Serialize(CString FileName);
 };
 #endif
