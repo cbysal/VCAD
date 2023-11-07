@@ -135,6 +135,33 @@ void CComb::Init()
 	entities.clear();
 }
 
-void CComb::Serialize(CArchive& ar)
+void CComb::Serialize(CString FileName)
 {
+
+
+	//
+	FileName += ".CAD|.CAD|";
+	FileName.Replace('|', '\0');
+	
+	//	创建文件
+	CFileException fe;
+	CFile* pFile = new CFile(FileName, CFile::modeCreate |
+		CFile::modeWrite | CFile::shareExclusive);
+
+	if (pFile == NULL)
+		return;
+
+	CArchive saveArchive(pFile, CArchive::store | CArchive::bNoFlushOnDelete);
+	saveArchive.m_pDocument = g_pDoc;
+	saveArchive.m_bForceFlat = TRUE;
+
+	//	保存文件
+	g_pDoc->Serialize(saveArchive);
+
+	//设置文档更新标记
+	g_pDoc->SetModifiedFlag(FALSE);
+
+	saveArchive.Close();
+	g_pDoc->ReleaseFile(pFile, FALSE);
+
 }
