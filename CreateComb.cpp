@@ -52,14 +52,18 @@ int	CCreateComb::OnLButtonDown(UINT nFlags, const Position& pos)
 
 		std::vector<MEntity*> entities;
 		for (int i = 0; i < g_pDoc->m_selectArray.GetSize(); i++) {
-			entities.push_back(((MEntity*)g_pDoc->m_selectArray.GetAt(i))->Copy());
+			entities.push_back(((MEntity*)g_pDoc->m_selectArray.GetAt(i)));
+		}
+
+		for (MEntity* entity : entities) {
+			POSITION pos = g_pDoc->m_EntityList.Find(entity);
+			g_pDoc->m_EntityList.RemoveAt(pos);
 		}
 
 		CTextInputDlg dlg;
 		dlg.DoModal();
 
 		CComb* pComb = new CComb(dlg.m_text, m_LeftTop, m_RightBottom, entities);
-		pComb->Serialize(dlg.m_text);//序列化
 		g_pView->Erase();
 		pComb->Draw(pDC, dmNormal);
 		g_pDoc->m_EntityList.AddTail(pComb); // 将指针添加到图元链表

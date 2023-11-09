@@ -1271,12 +1271,10 @@ void CVCadView::OnLButtonUp(UINT nFlags, CPoint point)
 //			pEntity->Move(basePos, desPos); // 将图元移动到目标位置
 //			pEntity->Draw(pDC,dmNormal); // 在目标位置上绘制图元
 
-			MEntity * pNewEnt = pEntity->Copy();
-			pNewEnt->Move(basePos, desPos); // 将图元移动到目标位置
-			pNewEnt->Draw(pDC,dmNormal); // 在目标位置上绘制图元
+			pEntity->Move(basePos, desPos); // 将图元移动到目标位置
+			pEntity->Draw(pDC,dmNormal); // 在目标位置上绘制图元
 			g_pDoc->SetModifiedFlag(TRUE); // 标志文档数据已被修改
-			pNewEnt->m_nOperationNum = g_pView->m_nCurrentOperation;
-			pEntity->Append(pNewEnt);
+			pEntity->m_nOperationNum = g_pView->m_nCurrentOperation;
 		}
 		g_pDoc->m_selectArray.RemoveAll(); //  清空选择集
 //		g_pDoc->SetModifiedFlag(TRUE); // 标志文档数据已被修改

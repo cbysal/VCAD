@@ -39,7 +39,7 @@ int	CDeleteComb::OnLButtonDown(UINT nFlags, const Position& pos)
 
 	CComb* oldComb = NULL;    // 新建一个CComb类型的指针变量并赋值为NULL
 	int ListLength_1 = g_pDoc->m_EntityList.GetCount();
-	MEntity* SYentityHead_beginning = (MEntity*)g_pDoc->m_EntityList.GetHead(); 
+	MEntity* SYentityHead_beginning = (MEntity*)g_pDoc->m_EntityList.GetHead();
 	POSITION position = g_pDoc->m_EntityList.GetHeadPosition();  // position用于储存图元链表的开始地址
 	while (position != NULL) {  // 当position不为空，即图元链表中存在已有项时，进入while循环
 		MEntity* entity = (MEntity*)g_pDoc->m_EntityList.GetAt(position);  // 利用图元的地址循环索引图元
@@ -61,18 +61,15 @@ int	CDeleteComb::OnLButtonDown(UINT nFlags, const Position& pos)
 		return 0;
 	}
 
+	std::vector<MEntity*> entities = oldComb->GetEntities();
+	for (MEntity* entity : entities) {
+		MEntity* newEntity = entity->Copy();
+		newEntity->Draw(pDC, dmNormal);
+		g_pDoc->m_EntityList.AddTail(newEntity);
+		newEntity->m_nOperationNum = g_pView->m_nCurrentOperation;
+	}
 	g_pDoc->m_EntityList.RemoveAt(position);  // 将与对话框内容匹配的指定组合从图元列表删除
-	int ListLength_2 = g_pDoc->m_EntityList.GetCount();
-	g_pView->Erase();
-
-	oldComb->Draw(pDC, dmNormal);
-	for (int i = 0; i < ListLength_2; i++) {
-		g_pDoc->m_EntityList.AddTail(oldComb->GetEntities()[i]); // 将指针添加到图元链表
-	}
 	g_pDoc->SetModifiedFlag(TRUE);// set modified flag ;
-	for (int i = 0; i < ListLength_2; i++) {
-		oldComb->GetEntities()[i]->m_nOperationNum = g_pView->m_nCurrentOperation;
-	}
 
 	g_pView->ReleaseDC(pDC); // 释放设备环境指针
 
