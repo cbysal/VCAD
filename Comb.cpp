@@ -135,33 +135,68 @@ void CComb::Init()
 	entities.clear();
 }
 
-void CComb::Serialize(CString FileName)
+void CComb::Serialize(CArchive& ar)
 {
-
-
-	//
-	FileName += ".CAD|.CAD|";
-	FileName.Replace('|', '\0');
-	
-	//	创建文件
-	CFileException fe;
-	CFile* pFile = new CFile(FileName, CFile::modeCreate |
-		CFile::modeWrite | CFile::shareExclusive);
-
-	if (pFile == NULL)
-		return;
-
-	CArchive saveArchive(pFile, CArchive::store | CArchive::bNoFlushOnDelete);
-	saveArchive.m_pDocument = g_pDoc;
-	saveArchive.m_bForceFlat = TRUE;
-
-	//	保存文件
-	g_pDoc->Serialize(saveArchive);
-
-	//设置文档更新标记
-	g_pDoc->SetModifiedFlag(FALSE);
-
-	saveArchive.Close();
-	g_pDoc->ReleaseFile(pFile, FALSE);
-
+	MEntity::Serialize(ar);
+	if(ar.IsStoring())
+		ar << name;
+	else
+		ar >> name;
+	m_LeftTop.Serialize(ar);
+	m_RightBottom.Serialize(ar);
+	int entityNum = entities.size();
+	if (ar.IsStoring())
+	{
+		ar << entityNum;
+		for (MEntity* entity : entities) 
+		{
+			ar << entity->GetType();
+			entity->Serialize(ar);
+		}
+	}
+	else
+	{
+		ar >> entityNum;
+		for (int i = 0; i < entityNum; i++)
+		{
+			int type;
+			ar >> type;
+			MEntity* entity;
+			switch (type)
+			{
+			case etPoint:
+				entity = new MLines();
+				break;
+			case etRectangle:
+				entity = new MRectangle();
+				break;
+			case etCircle:
+				entity = new CCircle();
+				break;
+			case etArc:
+				entity = new CArc();
+				break;
+			case etEllipse:
+				entity = new MEllipse();
+				break;
+			case etText:
+				entity = new MText();
+				break;
+			case etPolygon:
+				entity = new MPolygon();
+				break;
+			case etBlock:
+				entity = new MBlock();
+				break;
+			case etConnect:
+				entity = new MConnect();
+				break;
+			case etComb:
+				entity = new CComb();
+				break;
+			}
+			entity->Serialize(ar);
+			entities.push_back(entity);
+		}
+	}
 }
