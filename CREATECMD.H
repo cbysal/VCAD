@@ -268,27 +268,6 @@ public:
 	int		Cancel();
 };
 
-///////////////////////////////////////////////////////////////
-/*
- *	CDeleteComb
- */
-class CDeleteComb : public CCommand
-{
-private:
-	Position m_LeftTop;
-	Position m_RightBottom;
-public:
-	CDeleteComb();
-	~CDeleteComb();
-
-	int		GetType();
-	int		OnLButtonDown(UINT nFlags, const Position& pos);
-	int		OnMouseMove(UINT nFlags, const Position& pos);
-	int		OnRButtonDown(UINT nFlags, const Position& pos);
-	int		Cancel();
-};
-
-
 #endif // #ifdef __cplusplus
 
 #endif

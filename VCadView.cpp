@@ -77,18 +77,7 @@ BEGIN_MESSAGE_MAP(CVCadView, CView)
 					ID_INSERT_COMB, OnCreateEntity)
 	ON_UPDATE_COMMAND_UI_RANGE(ID_CREATE_LINE, 
 					ID_INSERT_COMB, OnUpdateCreateCommand)
-
-
-	/********************************************************************/
-	/********************************************************************/
-	// 由孙源添加，目标为创建相互联系，使工具栏内【取消组合】由灰色不可点击转为可点击状态
-	ON_COMMAND_RANGE(ID_INSERT_COMB,
-		ID_DELETE_COMB, OnCreateEntity)
-	ON_UPDATE_COMMAND_UI_RANGE(ID_INSERT_COMB,
-		ID_DELETE_COMB, OnUpdateCreateCommand)
-	/********************************************************************/
-	/********************************************************************/
-
+	ON_COMMAND(ID_DELETE_COMB, OnDeleteComb)
 	ON_COMMAND_RANGE(ID_MODIFY_MOVE, 
 					ID_MODIFY_ERASE, OnModifyEntity)
 	ON_UPDATE_COMMAND_UI_RANGE(ID_MODIFY_MOVE, 
@@ -289,11 +278,6 @@ void CVCadView::OnCreateEntity(UINT m_nID)
 			m_pCmd = new CInsertComb();
 			break;
 		}
-		case ID_DELETE_COMB:
-		{
-			m_pCmd = new CDeleteComb();
-			break;
-		}
 	}
 }
 
@@ -365,12 +349,6 @@ void CVCadView::OnUpdateCreateCommand(CCmdUI* pCmdUI)
 		case ID_INSERT_COMB:
 		{
 			if ((m_pCmd != NULL && m_pCmd->GetType() == ctInsertComb))
-				flag = 1;
-			break;
-		}
-		case ID_DELETE_COMB:
-		{
-			if ((m_pCmd != NULL && m_pCmd->GetType() == ctDeleteComb))
 				flag = 1;
 			break;
 		}
@@ -1671,4 +1649,47 @@ void CVCadView::OnInnerpt()
 {
 	OnCreateEntity(32816);
 	//区域识别
+}
+
+void CVCadView::OnDeleteComb()
+{
+	CDC* pDC = g_pView->GetDC(); // 得到设备环境指针 
+	CTextInputDlg dlg1;
+	dlg1.DoModal();
+
+	CComb* oldComb = NULL;    // 新建一个CComb类型的指针变量并赋值为NULL
+	int ListLength_1 = g_pDoc->m_EntityList.GetCount();
+	MEntity* SYentityHead_beginning = (MEntity*)g_pDoc->m_EntityList.GetHead();
+	POSITION position = g_pDoc->m_EntityList.GetHeadPosition();  // position用于储存图元链表的开始地址
+	while (position != NULL) {  // 当position不为空，即图元链表中存在已有项时，进入while循环
+		MEntity* entity = (MEntity*)g_pDoc->m_EntityList.GetAt(position);  // 利用图元的地址循环索引图元
+		if (entity->GetType() == etComb) {  // 如果entity数据类型是etComb则进入if
+			CComb* comb = (CComb*)entity;  // 为了保护entity，将entity拷贝到comb
+			if (!comb->GetName().Compare(dlg1.m_text)) // 将comb的name与dlg1对话框输入的名字进行对比
+			{
+				oldComb = (CComb*)entity;   // 当comb的name与dlg1对话框输入的名字一致时，将entity拷贝到oldComb
+				break;
+			}
+		}
+		g_pDoc->m_EntityList.GetNext(position); // 前往下一个图元的地址
+
+	}
+	if (oldComb == NULL) {
+		char msg[256];
+		sprintf(msg, "不存在组合: %s", dlg1.m_text);
+		MessageBox(msg, "错误", MB_OK);
+		return;
+	}
+
+	std::vector<MEntity*> entities = oldComb->GetEntities();
+	for (MEntity* entity : entities) {
+		MEntity* newEntity = entity->Copy();
+		newEntity->Draw(pDC, dmNormal);
+		g_pDoc->m_EntityList.AddTail(newEntity);
+		newEntity->m_nOperationNum = g_pView->m_nCurrentOperation;
+	}
+	g_pDoc->m_EntityList.RemoveAt(position);  // 将与对话框内容匹配的指定组合从图元列表删除
+	g_pDoc->SetModifiedFlag(TRUE);// set modified flag ;
+
+	g_pView->ReleaseDC(pDC); // 释放设备环境指针
 }

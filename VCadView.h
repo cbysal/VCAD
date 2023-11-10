@@ -108,6 +108,7 @@ protected:
 	afx_msg void OnMenuitem32814();
 	afx_msg void OnMenuitem32815();
 	afx_msg void OnInnerpt();
+	afx_msg void OnDeleteComb();
 	//}}AFX_MSG
 	afx_msg void OnCreateEntity(UINT m_nID);
 	afx_msg void OnUpdateCreateCommand(CCmdUI* pCmdUI);
