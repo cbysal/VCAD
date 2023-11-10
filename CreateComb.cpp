@@ -50,9 +50,17 @@ int	CCreateComb::OnLButtonDown(UINT nFlags, const Position& pos)
 		g_pDoc->OnLButtonDown(MK_LBUTTON, m_LeftTop);
 		g_pDoc->OnLButtonDown(MK_LBUTTON, m_RightBottom);
 
+		Position ltPos(1e7, 1e7), rbPos(-1e7, -1e7);
 		std::vector<MEntity*> entities;
 		for (int i = 0; i < g_pDoc->m_selectArray.GetSize(); i++) {
-			entities.push_back(((MEntity*)g_pDoc->m_selectArray.GetAt(i)));
+			MEntity* entity = (MEntity*)g_pDoc->m_selectArray.GetAt(i);
+			entities.push_back(entity);
+			BOX2D box;
+			entity->GetBox(&box);
+			ltPos.x = std::min<double>(ltPos.x, box.min[0]);
+			rbPos.x = std::max<double>(rbPos.x, box.max[0]);
+			ltPos.y = std::min<double>(ltPos.y, box.min[1]);
+			rbPos.y = std::max<double>(rbPos.y, box.max[1]);
 		}
 
 		for (MEntity* entity : entities) {
@@ -63,7 +71,7 @@ int	CCreateComb::OnLButtonDown(UINT nFlags, const Position& pos)
 		CTextInputDlg dlg;
 		dlg.DoModal();
 
-		CComb* pComb = new CComb(dlg.m_text, m_LeftTop, m_RightBottom, entities);
+		CComb* pComb = new CComb(dlg.m_text, ltPos, rbPos, entities);
 		g_pView->Erase();
 		pComb->Draw(pDC, dmNormal);
 		g_pDoc->m_EntityList.AddTail(pComb); // 将指针添加到图元链表
