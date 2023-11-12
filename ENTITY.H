@@ -521,6 +521,8 @@ public:
 	void Draw(CDC* pDC, int drawMode = dmNormal);
 	BOOL Pick(const Position& pos, const double pick_radius);
 	void Move(const Position& basePos, const Position& desPos, BOOL bTemp = FALSE);
+	void Rotate(const Position& basePos, const double angle);
+	void Mirror(const Position& FstPos, const Position& SecPos);
 	void GetBox(BOX2D* pBox);
 	void Serialize(CArchive& ar);
 };

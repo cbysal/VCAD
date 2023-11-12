@@ -120,6 +120,40 @@ void CComb::Move(const Position& basePos, const Position& desPos, BOOL bTemp)
 	}
 }
 
+void CComb::Rotate(const Position& basePos, const double angle)
+{
+	Position ltPos(1e7, 1e7), rbPos(-1e7, -1e7);
+	for (MEntity* entity : entities)
+	{
+		entity->Rotate(basePos, angle);
+		BOX2D box;
+		entity->GetBox(&box);
+		ltPos.x = std::min<double>(ltPos.x, box.min[0]);
+		rbPos.x = std::max<double>(rbPos.x, box.max[0]);
+		ltPos.y = std::min<double>(ltPos.y, box.min[1]);
+		rbPos.y = std::max<double>(rbPos.y, box.max[1]);
+	}
+	m_LeftTop = ltPos;
+	m_RightBottom = rbPos;
+}
+
+void CComb::Mirror(const Position& pos1, const Position& pos2)
+{
+	Position ltPos(1e7, 1e7), rbPos(-1e7, -1e7);
+	for (MEntity* entity : entities)
+	{
+		entity->Mirror(pos1, pos2);
+		BOX2D box;
+		entity->GetBox(&box);
+		ltPos.x = std::min<double>(ltPos.x, box.min[0]);
+		rbPos.x = std::max<double>(rbPos.x, box.max[0]);
+		ltPos.y = std::min<double>(ltPos.y, box.min[1]);
+		rbPos.y = std::max<double>(rbPos.y, box.max[1]);
+	}
+	m_LeftTop = ltPos;
+	m_RightBottom = rbPos;
+}
+
 void CComb::GetBox(BOX2D* pBox)
 {
 	pBox->min[0] = min(m_LeftTop.x, m_RightBottom.x);
