@@ -541,8 +541,6 @@ void CVCadView::OnLButtonDblClk(UINT nFlags, CPoint point)
 		CVCadDoc * pDoc = GetDocument() ;
 		ASSERT_VALID(pDoc) ;
 		
-		pDoc->OnLButtonDown(nFlags, pos);
-		
 		MEntity* pSelEntity = NULL ;
 		//POSITION pos = NULL ; //释放了pos，由于后续需要pos的坐标信息，此处注释
 		if(pDoc->m_selectArray.GetSize() == 1) 
